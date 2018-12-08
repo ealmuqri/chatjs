@@ -1,0 +1,28 @@
+{
+  "name": "chatjs",
+  "version": "1.0.0",
+  "description": "Custom chat backend made with node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ealmuqri/chatjs.git"
+  },
+  "author": "Essam Almuqri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ealmuqri/chatjs/issues"
+  },
+  "homepage": "https://github.com/ealmuqri/chatjs#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0",
+    "ws": "^6.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.7"
+  }
+}
