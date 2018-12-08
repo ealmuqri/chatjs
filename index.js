@@ -5,7 +5,7 @@ const clientsList = {};
 wss.on('connection', function connection(ws) {
 
     const userId = creatClientId(ws);
-    
+
     ws.on('message', function incoming(message) {
         console.log('recieved from: ' + userId);
         console.log('received: %s', message);
@@ -26,16 +26,16 @@ function creatClientId(ws) {
 
 // takes userId input and searches ClientsList then, send message to User
 // 0.8864452392915056
-function sendToClient(userId){
+function sendToClient(userId) {
     const ws = clientsList[userId];
-    if(ws){
-        console.log('Message sent to: '+userId);
-        ws.send('you got new message');      
+    if (ws) {
+        console.log('Message sent to: ' + userId);
+        ws.send('you got new message');
     }
 }
 
 // parse message
-function parseMessage(message){
+function parseMessage(message) {
     const data = JSON.parse(message);
-    console.log('Message to: '+data.to);
+    console.log('Message to: ' + data.to);
 }
