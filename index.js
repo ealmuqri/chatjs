@@ -37,7 +37,6 @@ function creatClientId(ws) {
 
 
 // takes userId input and searches ClientsList then, send message to User
-// 0.8864452392915056
 function sendToClient(userId) {
 
 }
@@ -48,7 +47,7 @@ function parseMessage(message, ws) {
 
     switch (message.type) {
         case "directMessage":
-            sendDirectMessage(message);
+            sendDirectMessage(message.message);
             break;
         case "registerClient":
             registerClient(message, ws);
@@ -69,8 +68,13 @@ function sendDirectMessage(message) {
     // TODO: validate message.to
     // TODO: construct message structure.
     const ws = clientsList[message.destination];
+    console.log(message);
+    console.log(message.destination);
+    
     if (ws) {
         ws.send(message.content);
+    }else{
+        console.log('message not sent');   
     }
 }
 
@@ -78,5 +82,6 @@ function registerClient(message, ws) {
     const user = message.user;
     clientsList[user.email] = ws;
     console.log('Client ID: ' + user.email + " connected!");
+    
     // return user;
 }
