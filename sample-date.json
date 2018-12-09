@@ -1,0 +1,33 @@
+{
+    "type":"registerClient",
+    "user":{
+        "email":"email1@something.com",
+        "name":"Khalid",
+        "bioMessage":"great things happen"
+    }
+}
+{
+    "type":"registerClient",
+    "user":{
+        "email":"email2@something.com",
+        "name":"Hamad",
+        "bioMessage":"Wow carefull"
+    }
+}
+
+
+{
+    "type":"directMessage",
+    "message":{
+        "content":"message String",
+        "destination":"email1@something.com"
+    }
+}
+
+{
+    "type":"directMessage",
+    "message":{
+        "content":"message String for Number 2",
+        "destination":"email2@something.com"
+    }
+}
