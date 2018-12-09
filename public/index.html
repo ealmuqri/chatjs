@@ -1,1 +1,39 @@
-HEEEY
+<script>
+    const chatjs = {
+        socket: function () {
+            return new WebSocket('ws://localhost:8080');
+        }(),
+        registerUser: function (email, name, bioMessage) {
+            const user = {
+                email: email,
+                name: name,
+                bioMessage: bioMessage
+            }
+            const message = {
+                type: "registerClient",
+                user: user
+            }
+            this.socket.send(JSON.stringify(message));
+        },
+        sendDirectMessage: function (destination, content) {
+            const message = {
+                type: "directMessage",
+                message: {
+                    content: content,
+                    destination,
+                    destination
+                }
+            }
+            this.socket.send(JSON.stringify(message));
+        }
+    }
+    
+    chatjs.socket.onopen = function(){
+        console.log('connection opened');
+        
+        chatjs.registerUser('ealmuqri.c@stc.com.sa', 'Essam', 'Great');
+        chatjs.sendDirectMessage('ealmuqri.c@stc.com.sa', 'whats up bro');
+    }
+        
+    
+</script>
