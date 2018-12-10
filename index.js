@@ -8,18 +8,19 @@ const userModel = require('./models/user.model');
 const messageModel = require('./models/message.model');
 const groupModel = require('./models/group.model');
 
+const clientsList = {};
 
 const server = http.createServer(function (request, response) {
     const html = fs.readFileSync('./public/index.html');
     response.write(html);
     response.end();
 }).listen(port);
+
 const wss = new WebSocket.Server({
     server: server
 });
 
 
-const clientsList = {};
 wss.on('connection', function connection(ws) {
 
     ws.on('message', function incoming(message) {
@@ -41,7 +42,6 @@ function creatClientId(ws) {
     return user;
 }
 
-
 // takes userId input and searches ClientsList then, send message to User
 function sendToClient(userId) {
 
@@ -62,6 +62,7 @@ function parseMessage(message, ws) {
 
 }
 
+//
 function sendDirectMessage(m) {
     const message = new messageModel(m);
     // TODO: validate message.to
@@ -77,6 +78,7 @@ function sendDirectMessage(m) {
     }
 }
 
+//
 function registerClient(message, ws) {
     const user = message.user;
     clientsList[user.email] = ws;
