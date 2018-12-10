@@ -79,8 +79,10 @@ function sendDirectMessage(m) {
 }
 
 //
-function registerClient(message, ws) {
-    const user = message.user;
+function registerClient(m, ws) {
+    const user = new userModel(m.user);
     clientsList[user.email] = ws;
     console.log('Client ID: ' + user.email + " connected!");
+    console.log(user);
+
 }
