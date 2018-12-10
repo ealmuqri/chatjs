@@ -3,6 +3,9 @@
         socket: function () {
             return new WebSocket('ws://localhost:8080');
         }(),
+        connect: function () {
+            this.socket = new WebSocket('ws://localhost:8080');
+        },
         registerUser: function (email, name, bioMessage) {
             const user = {
                 email: email,
@@ -27,13 +30,14 @@
             this.socket.send(JSON.stringify(message));
         }
     }
-    
-    chatjs.socket.onopen = function(){
+
+    chatjs.socket.onopen = function () {
         console.log('connection opened');
-        
         chatjs.registerUser('ealmuqri.c@stc.com.sa', 'Essam', 'Great');
         chatjs.sendDirectMessage('ealmuqri.c@stc.com.sa', 'whats up bro');
     }
-        
-    
+
+    chatjs.socket.CLOSED = function () {
+        chatjs.connect();
+    }
 </script>
