@@ -9,3 +9,5 @@ class Group {
         this.description = group.description;
     }
 }
+
+module.exports = Group;
