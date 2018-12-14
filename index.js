@@ -4,6 +4,9 @@ const WebSocket = require('ws');
 const http = require('http');
 const port = 8080;
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/chatjs');
+
 const userModel = require('./models/user.model');
 const messageModel = require('./models/message.model');
 const groupModel = require('./models/group.model');
@@ -21,6 +24,15 @@ const wss = new WebSocket.Server({
 });
 
 
+// const Cat = mongoose.model('Cat', {
+//     name: String
+// });
+
+// const kitty = new Cat({
+//     name: 'Zildjian'
+// });
+// kitty.save().then(() => console.log('meow'));
+
 wss.on('connection', function connection(ws) {
 
     ws.on('message', function incoming(message) {
@@ -28,7 +40,7 @@ wss.on('connection', function connection(ws) {
             message = JSON.parse(message);
             parseMessage(message, ws);
         } catch (error) {
-            console.log('not JSON message passed');
+            console.log(error);
         }
     });
 });
@@ -80,9 +92,8 @@ function sendDirectMessage(m) {
 
 //
 function registerClient(m, ws) {
-    const user = new userModel(m.user);
-    clientsList[user.email] = ws;
-    console.log('Client ID: ' + user.email + " connected!");
-    console.log(user);
-
+    // create new obj for user. Add to DB if New
+    let user = new userModel(m.user);
+    // add clinet to list of clients. 
+    clientsList[m.user.email] = ws;
 }
