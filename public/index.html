@@ -6,12 +6,14 @@
         connect: function () {
             this.socket = new WebSocket('ws://localhost:8080');
         },
+        user: {},
         registerUser: function (email, name, bioMessage) {
             const user = {
                 email: email,
                 name: name,
                 bioMessage: bioMessage
             }
+            this.user = user;
             const message = {
                 type: "registerClient",
                 user: user
@@ -23,8 +25,8 @@
                 type: "directMessage",
                 message: {
                     content: content,
-                    destination,
-                    destination
+                    destination: destination,
+                    source: this.user.email
                 }
             }
             this.socket.send(JSON.stringify(message));
@@ -33,11 +35,25 @@
 
     chatjs.socket.onopen = function () {
         console.log('connection opened');
-        chatjs.registerUser('ealmuqri.c@stc.com.sa', 'Essam', 'Great');
-        chatjs.sendDirectMessage('ealmuqri.c@stc.com.sa', 'whats up bro');
     }
 
-    chatjs.socket.CLOSED = function () {
+    function test1() {
+        chatjs.registerUser('ealmuqri.c@stc.com.sa', 'Essam', 'Great');
+        chatjs.sendDirectMessage('nasser.c@stc.com.sa', 'whats up bro');
+    }
+
+    function test2() {
+        chatjs.registerUser('nasser.c@stc.com.sa', 'Nasser', 'what up bro');
+        chatjs.sendDirectMessage('ealmuqri.c@stc.com.sa', 'doing great');
+    }
+
+    chatjs.socket.onmessage = function (event) {
+        console.log('message recieved : ' + event.data);
+
+    }
+
+    chatjs.socket.onclose = function () {
+        console.log('connection closed');
         chatjs.connect();
     }
 </script>

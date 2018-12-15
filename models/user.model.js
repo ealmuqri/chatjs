@@ -3,23 +3,23 @@ const mongoose = require('mongoose');
 
 class User {
     constructor(user) {
-        // this.id = user.id;
-        // this.name = user.name;
-        // this.email = user.email;
-        // this.bioMessage = user.bioMessage;
-        // this.status = user.status;
-        // this.friends = user.friends;
-        // this.blockedUsers = user.blockedUsers;
-        // this.starredMessages = user.starredMessages;
-        // this.archivedChats = user.archivedChats;
+        this.id = user.id;
+        this.name = user.name;
+        this.email = user.email;
+        this.bioMessage = user.bioMessage;
+        this.status = user.status;
+        this.friends = user.friends;
+        this.blockedUsers = user.blockedUsers;
+        this.starredMessages = user.starredMessages;
+        this.archivedChats = user.archivedChats;
 
         const userModel = this.getMongoModel(user);
-        // TODO: Check if user is in DB.
 
+        // Save user to DB if email does not exit.
         userModel.save(function (err) {
             if (err) {
                 //11000  
-                console.error(err);
+                console.error('user exists');
             }
         });
 
