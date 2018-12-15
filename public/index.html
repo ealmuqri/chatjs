@@ -6,12 +6,14 @@
         connect: function () {
             this.socket = new WebSocket('ws://localhost:8080');
         },
+        user: {},
         registerUser: function (email, name, bioMessage) {
             const user = {
                 email: email,
                 name: name,
                 bioMessage: bioMessage
             }
+            this.user = user;
             const message = {
                 type: "registerClient",
                 user: user
@@ -23,8 +25,8 @@
                 type: "directMessage",
                 message: {
                     content: content,
-                    destination,
-                    destination
+                    destination: destination,
+                    source: this.user.email
                 }
             }
             this.socket.send(JSON.stringify(message));
