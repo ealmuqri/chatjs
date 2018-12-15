@@ -14,12 +14,12 @@ class User {
         // this.archivedChats = user.archivedChats;
 
         const userModel = this.getMongoModel(user);
-        // TODO: Check if user is in DB.
 
+        // Save user to DB if email does not exit.
         userModel.save(function (err) {
             if (err) {
                 //11000  
-                console.error(err);
+                console.error('user exists');
             }
         });
 

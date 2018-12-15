@@ -24,15 +24,6 @@ const wss = new WebSocket.Server({
 });
 
 
-// const Cat = mongoose.model('Cat', {
-//     name: String
-// });
-
-// const kitty = new Cat({
-//     name: 'Zildjian'
-// });
-// kitty.save().then(() => console.log('meow'));
-
 wss.on('connection', function connection(ws) {
 
     ws.on('message', function incoming(message) {
