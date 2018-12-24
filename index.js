@@ -4,7 +4,6 @@ const fs = require('fs');
 const WebSocket = require('ws');
 const http = require('http');
 const port = 8080;
-const v8 = require('v8');
 global.messagesRecieved = 0;
 global.messagesSaved = 0;
 
@@ -36,6 +35,7 @@ wss.on('connection', function connection(ws) {
 
     ws.on('message', function incoming(message) {
         try {
+            messageCount++;
             global.messagesRecieved++;
             message = JSON.parse(message);
             parseMessage(message, ws);
@@ -46,29 +46,8 @@ wss.on('connection', function connection(ws) {
     });
 });
 
-// const interval = 1000;
-// setInterval(() => {
-//     console.log("Recieved: " + global.messagesRecieved + " Saved: " + global.messagesSaved);
-
-// }, interval);
-
-function creatClientId(ws) {
-    user.id = Math.random();
-    user.email = 'ealmuqri';
-    clientsList[user.email] = ws;
-    console.log('Client ID: ' + user.email + " connected!");
-    return user;
-}
-
-// takes userId input and searches ClientsList then, send message to User
-function sendToClient(userId) {
-
-}
-
 // parse message to determine what kind of message and best action.
 function parseMessage(message, ws) {
-    // console.log(messageCount++);
-
     switch (message.type) {
         case "directMessage":
             sendDirectMessage(message.message);
@@ -79,23 +58,21 @@ function parseMessage(message, ws) {
         default:
             break;
     }
-
 }
 
+// Create Async queue
+const q = async.queue(function (message, callback) {
+    new messageModel(message);
+    callback();
+}, 1);
 
 //
 function sendDirectMessage(m) {
-    const message = new messageModel(m);
-    // q.push(m, function () {
-    //     console.log("Recieved: " + global.messagesRecieved + " Saved: " + global.messagesSaved);
-    // });
+    // push to async queue for performance.
+    q.push(m);
     // TODO: construct message structure.
     // TODO: validate if reciever is online.
     const ws = clientsList[m.destination];
-    // console.log(message);
-    // console.log(message.destination);
-    // console.log(v8.getHeapStatistics());
-    // console.log(messageCount++);
 
     if (ws) {
         ws.send(m.content);
@@ -111,8 +88,3 @@ function registerClient(m, ws) {
     // add clinet to list of clients. 
     clientsList[m.user.email] = ws;
 }
-const q = async.queue(function (message, callback) {
-
-    new messageModel(message);
-    callback();
-}, 1);
