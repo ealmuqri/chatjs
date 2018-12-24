@@ -55,6 +55,8 @@ function parseMessage(message, ws) {
         case "registerClient":
             registerClient(message, ws);
             break;
+        case "history":
+            sendMessageHistory(message, ws);
         default:
             break;
     }
@@ -66,25 +68,55 @@ const q = async.queue(function (message, callback) {
     callback();
 }, 1);
 
-//
+// fun sends a message to a user or group and add message to storage queue.
 function sendDirectMessage(m) {
     // push to async queue for performance.
+    m.timeStamp = new Date();
     q.push(m);
     // TODO: construct message structure.
     // TODO: validate if reciever is online.
-    const ws = clientsList[m.destination];
+    sendMessageToClient(m.content, m.destination);
+}
 
+// fun sends any type of message to a given client id (email). 
+function sendMessageToClient(message, clientEmail) {
+    const ws = clientsList[clientEmail];
+    // check if connection is available
     if (ws) {
-        ws.send(m.content);
+        ws.send(message);
     } else {
-        // console.log('message not sent');
+        console.log('message not sent');
+        /* 
+        TODO: Handle message not sent to client.
+        */
     }
 }
 
-//
+// fun registers a user in clientsList and in DB if not exists.
 function registerClient(m, ws) {
+    /*
+     TODO: validate user model.
+    */
     // create new obj for user. Add to DB if New
     let user = new userModel(m.user);
     // add clinet to list of clients. 
     clientsList[m.user.email] = ws;
+}
+
+// fun gets message history from DB and send to client.
+function sendMessageHistory(m, ws) {
+    /*
+    TODO: Validate message. 
+    */
+
+    /*
+    Message content:
+    {
+        type: history,
+        source: EMAIL,
+        destination: EMAIL,
+        pageSize: 100,
+        index:
+    }
+    */
 }
