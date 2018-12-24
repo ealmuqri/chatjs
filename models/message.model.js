@@ -64,7 +64,7 @@ class Message {
 
             } else {
                 global.messagesSaved++;
-                console.log("Saved: " + global.messagesSaved);
+                // console.log("Saved: " + global.messagesSaved);
 
             }
         });

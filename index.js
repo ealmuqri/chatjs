@@ -39,12 +39,16 @@ wss.on('connection', function connection(ws) {
             global.messagesRecieved++;
             message = JSON.parse(message);
             parseMessage(message, ws);
-            console.log("Recieved: " + global.messagesRecieved + " Saved: " + global.messagesSaved);
+
         } catch (error) {
             console.log(error);
         }
     });
 });
+
+setInterval(() => {
+    console.log("Recieved: " + global.messagesRecieved + " Saved: " + global.messagesSaved);
+}, 3000);
 
 // parse message to determine what kind of message and best action.
 function parseMessage(message, ws) {
@@ -86,7 +90,7 @@ function sendMessageToClient(message, clientEmail) {
     if (ws) {
         ws.send(message);
     } else {
-        console.log('message not sent');
+        // console.log('message not sent');
         /* 
         TODO: Handle message not sent to client.
         */
