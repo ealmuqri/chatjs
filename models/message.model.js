@@ -10,74 +10,12 @@ class Message {
         this.source = message.source;
         this.destination = message.destination;
         this.statuses = message.statuses;
-        // const messageDoc = this.getMongoDocument(message);
         let storedMessages = 0;
         let numberOfMissed = 0;
+        // Get DB and save into collection.
+        this.saveMessage(message);
 
-
-
-        // const mongoDB = mongoUtil.getDB();
-        // mongoDB.collection('messages').insertOne(message, function (err, r) {
-        //     if (err) {
-        //         console.log(err);
-
-        //     } else {
-        //         global.messagesSaved++;
-        //         console.log("Saved: " + global.messagesSaved);
-
-        //     }
-        // });
-
-
-        // Save user to DB if email does not exit.
-        // messageDoc.save(function (err) {
-        //     if (err) {
-        //         console.error(err);
-        //     } else {
-        //         if (typeof storedMessages === 'undefined') {
-        //             // console.log('storedMessages not Defined');
-        //             numberOfMissed++;
-        //             // console.log(numberOfMissed);
-
-
-        //         } else {
-        //             if (storedMessages === 0) {
-        //                 numberOfMissed++;
-        //                 console.log('Total Missed: ' + numberOfMissed);
-
-        //             }
-        //             storedMessages++;
-        //             // console.log(storedMessages++);
-        //             console.log(error);
-
-        //         }
-        //     }
-        // });
-
-        // messageDoc.save().then(function (message) {
-        //     // console.log(message);
-        //     global.messagesSaved++;
-        // });
-        // if (typeof storedMessages === 'undefined') {
-        //     console.log('storedMessages not Defined');
-        //     numberOfMissed++;
-        //     // console.log(numberOfMissed);
-
-
-        // } else {
-        //     if (storedMessages === 0) {
-        //         numberOfMissed++;
-        //         // console.log('Total Missed: ' + numberOfMissed);
-
-        //     }
-        //     storedMessages++;
-        //     // console.log(storedMessages++);
-        //     // console.log(error);
-
-        // }
         return;
-
-
     }
 
     getMongoDocument(message) {
@@ -118,8 +56,18 @@ class Message {
         return messageDoc;
     }
 
-    AsynchSave(message) {
+    saveMessage(message) {
+        const mongoDB = mongoUtil.getDB();
+        mongoDB.collection('messages').insertOne(message, function (err, r) {
+            if (err) {
+                console.log(err);
 
+            } else {
+                global.messagesSaved++;
+                console.log("Saved: " + global.messagesSaved);
+
+            }
+        });
     }
 
 }
