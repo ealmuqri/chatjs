@@ -1,5 +1,6 @@
 'use string';
 const mongoose = require('mongoose');
+const mongoUtil = require('../db/mongoUtil');
 
 class Message {
     constructor(message) {
@@ -9,16 +10,12 @@ class Message {
         this.source = message.source;
         this.destination = message.destination;
         this.statuses = message.statuses;
-        const messageDoc = this.getMongoDocument(message);
+        let storedMessages = 0;
+        let numberOfMissed = 0;
+        // Get DB and save into collection.
+        this.saveMessage(message);
 
-        // Save user to DB if email does not exit.
-        messageDoc.save(function (err) {
-            if (err) {
-                //11000  
-                console.error(err);
-            }
-        });
-
+        return;
     }
 
     getMongoDocument(message) {
@@ -57,6 +54,20 @@ class Message {
         }
 
         return messageDoc;
+    }
+
+    saveMessage(message) {
+        const mongoDB = mongoUtil.getDB();
+        mongoDB.collection('messages').insertOne(message, function (err, r) {
+            if (err) {
+                console.log(err);
+
+            } else {
+                global.messagesSaved++;
+                console.log("Saved: " + global.messagesSaved);
+
+            }
+        });
     }
 
 }
