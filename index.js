@@ -63,8 +63,9 @@ function parseMessage(message, ws) {
 }
 
 // Create Async queue
-const q = async.queue(function (message, callback) {
-    new messageModel(message);
+const q = async.queue(function (m, callback) {
+    const message = new messageModel(m);
+    message.saveMessage(m)
     callback();
 }, 1);
 

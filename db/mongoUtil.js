@@ -2,7 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
 const dbName = 'chatjs';
 const client = new MongoClient(url, {
-    poolSize: 5
+    poolSize: 5,
+    forceServerObjectId: true
 });
 let db;
 

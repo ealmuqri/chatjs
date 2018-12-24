@@ -13,7 +13,7 @@ class Message {
         let storedMessages = 0;
         let numberOfMissed = 0;
         // Get DB and save into collection.
-        this.saveMessage(message);
+
 
         return;
     }
