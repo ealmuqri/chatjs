@@ -1,12 +1,6 @@
 const WebSocket = require('ws');
 
-// const socket = new WebSocket('ws://localhost:8080');
-// console.log(socket);
 
-// socket.onopen = function () {
-//     console.log('connection open!!');
-
-// }
 let messagesSent = 0;
 const chatjs = {
     socket: function () {
@@ -49,10 +43,6 @@ chatjs.socket.onopen = function () {
     console.log('connection opened');
     test1();
     loadTest1();
-    // setInterval(() => {
-    //     loadTest1();
-    // }, 3000);
-
 }
 
 function test1() {
@@ -78,7 +68,7 @@ function loadTest1() {
 
 function loadTest2() {
     console.log('Starting to make 1,000,000 messages');
-    let numMessages = 200000;
+    let numMessages = 1000000;
     while (numMessages > 0) {
         numMessages--;
         chatjs.sendDirectMessage('ealmuqri.c@stc.com.sa', makeRandomText());
