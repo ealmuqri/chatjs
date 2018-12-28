@@ -9,13 +9,13 @@ global.messagesSaved = 0;
 
 const mongoUtil = require('./db/mongoUtil');
 mongoUtil.connect();
-
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/chatjs');
-
 const userModel = require('./models/user.model');
 const messageModel = require('./models/message.model');
 const groupModel = require('./models/group.model');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/chatjs');
+
+
 
 const clientsList = {};
 
@@ -124,4 +124,12 @@ function sendMessageHistory(m, ws) {
         index:
     }
     */
+    // console.log(m);
+
+    const message = new messageModel();
+    message.getOneToOneMessageHistory(m.source, m.destination, m.pageSize, m.index).then(function (messages) {
+        // console.log(messages);
+        sendMessageToClient(JSON.stringify(messages), m.source);
+    });
+
 }

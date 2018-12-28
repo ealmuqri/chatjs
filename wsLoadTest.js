@@ -36,17 +36,28 @@ const chatjs = {
             messagesSent++;
             console.log(messagesSent);
         });
+    },
+    getConversationHistory: function (source, destination, pageSize = 100, index = -1) {
+        const message = {
+            type: "history",
+            source: source,
+            destination: destination,
+            pageSize: pageSize,
+            index: index
+        };
+        this.socket.send(JSON.stringify(message));
     }
 }
 
 chatjs.socket.onopen = function () {
     console.log('connection opened');
     test1();
-    loadTest1();
+    // loadTest1();
 }
 
 function test1() {
     chatjs.registerUser('ealmuqri.c@stc.com.sa', 'Essam', 'Great');
+    chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
     chatjs.sendDirectMessage('nasser.c@stc.com.sa', 'whats up bro');
 }
 
@@ -76,7 +87,8 @@ function loadTest2() {
 }
 
 chatjs.socket.onmessage = function (event) {
-    console.log('message recieved : ' + event.data);
+    console.log(JSON.parse(event.data));
+
 
 }
 
