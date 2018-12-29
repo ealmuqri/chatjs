@@ -4,16 +4,16 @@ const mongoUtil = require('../db/mongoUtil');
 
 class Message {
     constructor(message) {
-        this.id = message.id;
-        this.content = message.content;
-        this.timeStamp = message.timeStamp;
-        this.source = message.source;
-        this.destination = message.destination;
-        this.statuses = message.statuses;
+        // this.id = message.id;
+        // this.content = message.content;
+        // this.timeStamp = message.timeStamp;
+        // this.source = message.source;
+        // this.destination = message.destination;
+        // this.statuses = message.statuses;
         let storedMessages = 0;
         let numberOfMissed = 0;
         // Get DB and save into collection.
-        this.saveMessage(message);
+
 
         return;
     }
@@ -64,10 +64,32 @@ class Message {
 
             } else {
                 global.messagesSaved++;
-                console.log("Saved: " + global.messagesSaved);
+                // console.log("Saved: " + global.messagesSaved);
 
             }
         });
+    }
+
+    getOneToOneMessageHistory(source, destination, pageSize = 100, index = -1) {
+
+        return new Promise(function (resolve, reject) {
+            const mongoDB = mongoUtil.getDB();
+            mongoDB.collection('messages').find({
+                    source: source,
+                    destination: destination
+                }).sort({
+                    _id: index
+                })
+                .limit(pageSize).toArray(function (err, docs) {
+                    if (err) {
+                        console.log(err);
+
+                    } else {
+                        resolve(docs);
+                    }
+                });
+        });
+
     }
 
 }
