@@ -34,7 +34,7 @@ const chatjs = {
         }
         this.socket.send(JSON.stringify(message), function (err) {
             messagesSent++;
-            console.log(messagesSent);
+
         });
     },
     getConversationHistory: function (source, destination, pageSize = 100, index = 1) {
@@ -60,6 +60,9 @@ function test1() {
     // chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
     // chatjs.sendDirectMessage('nasser.c@stc.com.sa', 'whats up bro');
     loadTest1();
+    setInterval(() => {
+        console.log(messagesSent);
+    }, 500);
     setInterval(() => {
         chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
     }, 3000);
