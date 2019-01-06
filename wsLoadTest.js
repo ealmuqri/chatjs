@@ -34,10 +34,10 @@ const chatjs = {
         }
         this.socket.send(JSON.stringify(message), function (err) {
             messagesSent++;
-            console.log(messagesSent);
+
         });
     },
-    getConversationHistory: function (source, destination, pageSize = 100, index = -1) {
+    getConversationHistory: function (source, destination, pageSize = 100, index = 1) {
         const message = {
             type: "history",
             source: source,
@@ -57,8 +57,16 @@ chatjs.socket.onopen = function () {
 
 function test1() {
     chatjs.registerUser('ealmuqri.c@stc.com.sa', 'Essam', 'Great');
-    chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
-    chatjs.sendDirectMessage('nasser.c@stc.com.sa', 'whats up bro');
+    // chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
+    // chatjs.sendDirectMessage('nasser.c@stc.com.sa', 'whats up bro');
+    loadTest1();
+    setInterval(() => {
+        console.log(messagesSent);
+    }, 500);
+    setInterval(() => {
+        chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
+    }, 3000);
+
 }
 
 function test2() {
@@ -96,6 +104,7 @@ chatjs.socket.onclose = function () {
     console.log('connection closed');
     chatjs.connect();
 }
+var mcount = 0;
 
 function makeRandomText() {
     var text = "";
@@ -103,6 +112,6 @@ function makeRandomText() {
 
     for (var i = 0; i < 5; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
+    mcount++;
+    return text + mcount;
 }

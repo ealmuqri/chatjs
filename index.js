@@ -6,6 +6,7 @@ const http = require('http');
 const port = 8080;
 global.messagesRecieved = 0;
 global.messagesSaved = 0;
+global.messages = [];
 
 const mongoUtil = require('./db/mongoUtil');
 mongoUtil.connect();
@@ -69,7 +70,7 @@ function parseMessage(message, ws) {
 // Create Async queue
 const q = async.queue(function (m, callback) {
     const message = new messageModel(m);
-    message.saveMessage(m)
+    message.saveMessageInMemory(m)
     callback();
 }, 1);
 
@@ -127,7 +128,7 @@ function sendMessageHistory(m, ws) {
     // console.log(m);
 
     const message = new messageModel();
-    message.getOneToOneMessageHistory(m.source, m.destination, m.pageSize, m.index).then(function (messages) {
+    message.getOneToOneMessageHistoryFromMemory(m.source, m.destination, m.pageSize, m.index).then(function (messages) {
         // console.log(messages);
         sendMessageToClient(JSON.stringify(messages), m.source);
     });

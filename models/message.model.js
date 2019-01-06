@@ -70,6 +70,22 @@ class Message {
         });
     }
 
+    saveMessageInMemory(message) {
+        if (message.source < message.destination) {
+            if (typeof global.messages[message.source + ':' + message.destination] === 'undefined') {
+                global.messages[message.source + ':' + message.destination] = new Array(message);
+            } else {
+                global.messages[message.source + ':' + message.destination].push(message);
+            }
+        } else {
+            if (typeof global.messages[message.destination + ':' + message.source] === 'undefined') {
+                global.messages[message.destination + ':' + message.source] = new Array(message);
+            } else {
+                global.messages[message.destination + ':' + message.source].push(message);
+            }
+        }
+    }
+
     getOneToOneMessageHistory(source, destination, pageSize = 100, index = -1) {
 
         return new Promise(function (resolve, reject) {
@@ -90,6 +106,35 @@ class Message {
                 });
         });
 
+    }
+    getOneToOneMessageHistoryFromMemory(source, destination, pageSize = 100, index = 1) {
+        return new Promise(function (resolve, reject) {
+            let messages;
+            if (source < destination) {
+                if (typeof global.messages[source + ':' + destination] !== 'undefined') {
+                    let start = index * pageSize * -1;
+                    let end = (index * pageSize * -1) + pageSize;
+                    if (end === 0) {
+                        messages = global.messages[source + ':' + destination].
+                        slice(start);
+                    } else {
+                        messages = global.messages[source + ':' + destination].
+                        slice(start, end);
+                    }
+
+                    resolve(messages);
+                } else {
+                    reject();
+                }
+            } else {
+                if (typeof global.messages[destination + ':' + source] !== 'undefined') {
+                    messages = global.messages[destination + ':' + destination].
+                    slice(index * pageSize * -1, (index * pageSize * -1) + pageSize);
+                } else {
+                    reject();
+                }
+            }
+        });
     }
 
 }
