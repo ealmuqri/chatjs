@@ -4,6 +4,8 @@ const fs = require('fs');
 const WebSocket = require('ws');
 const http = require('http');
 const port = 8080;
+const redis = require('redis');
+const redisClient = redis.createClient();
 global.messagesRecieved = 0;
 global.messagesSaved = 0;
 global.messages = [];
@@ -13,10 +15,16 @@ mongoUtil.connect();
 const userModel = require('./models/user.model');
 const messageModel = require('./models/message.model');
 const groupModel = require('./models/group.model');
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/chatjs');
+// const mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/chatjs');
 
+redisClient.on('error', function (err) {
+    console.log(err);
+});
+redisClient.on('connect', function () {
+    console.log('redis connected!');
 
+})
 
 const clientsList = {};
 
