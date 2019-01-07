@@ -66,6 +66,9 @@ function test1() {
     setInterval(() => {
         chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
     }, 3000);
+    setInterval(() => {
+        loadTest1();
+    }, 10000);
 
 }
 
@@ -76,7 +79,7 @@ function test2() {
 
 function loadTest1() {
     console.log('Starting to make 1,000,000 messages');
-    let numMessages = 1000000;
+    let numMessages = 300000;
     while (numMessages > 0) {
         numMessages--;
         // console.log('remaining messages: ' + numMessages);
