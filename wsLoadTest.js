@@ -63,9 +63,9 @@ function test1() {
     setInterval(() => {
         console.log(messagesSent);
     }, 500);
-    setInterval(() => {
-        chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
-    }, 3000);
+    // setInterval(() => {
+    //     chatjs.getConversationHistory("ealmuqri.c@stc.com.sa", "nasser.c@stc.com.sa");
+    // }, 3000);
     setInterval(() => {
         loadTest1();
     }, 10000);

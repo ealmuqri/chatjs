@@ -86,6 +86,26 @@ class Message {
         }
     }
 
+    saveMessageinRedis(message, rc) {
+        if (message.source < message.destination) {
+
+            rc.rpush(message.source + ":" + message.destination, JSON.stringify(message));
+            // if (typeof global.messages[message.source + ':' + message.destination] === 'undefined') {
+            //     global.messages[message.source + ':' + message.destination] = new Array(message);
+            // } else {
+            //     global.messages[message.source + ':' + message.destination].push(message);
+            // }
+
+        } else {
+            rc.rpush(message.destination + ":" + message.source, JSON.stringify(message));
+            // if (typeof global.messages[message.destination + ':' + message.source] === 'undefined') {
+            //     global.messages[message.destination + ':' + message.source] = new Array(message);
+            // } else {
+            //     global.messages[message.destination + ':' + message.source].push(message);
+            // }
+        }
+    }
+
     getOneToOneMessageHistory(source, destination, pageSize = 100, index = -1) {
 
         return new Promise(function (resolve, reject) {

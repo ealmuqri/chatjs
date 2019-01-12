@@ -78,7 +78,8 @@ function parseMessage(message, ws) {
 // Create Async queue
 const q = async.queue(function (m, callback) {
     const message = new messageModel(m);
-    message.saveMessageInMemory(m)
+    // message.saveMessageInMemory(m);
+    message.saveMessageinRedis(m, redisClient);
     callback();
 }, 1);
 
